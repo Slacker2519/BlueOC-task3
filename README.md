@@ -96,7 +96,7 @@ index.tsx
 
 ## 🧩 Core Concepts
 
-### Store (`app/store.ts`)
+### Store (`state/store.ts`)
 
 The single source of truth for all application state. Exports `RootState` and `AppDispatch` types that are used throughout the app.
 
@@ -105,7 +105,7 @@ export type RootState   = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 ```
 
-### Typed Hooks (`app/hooks.ts`)
+### Typed Hooks (`state/hooks.ts`)
 
 Pre-typed wrappers around `useSelector` and `useDispatch`. Use these instead of the raw hooks to get full TypeScript inference without repeating type annotations in every component.
 
@@ -211,7 +211,7 @@ npm run build    # Build for production into /build
 
 1. Create `state/yourState/yourStateSlice.ts`
 2. Define the interface, `initialState`, thunks, and `extraReducers`
-3. Register the reducer in `app/store.ts`:
+3. Register the reducer in `state/store.ts`:
    ```ts
    import yourStateReducer from '../state/yourState/yourStateSlice';
 

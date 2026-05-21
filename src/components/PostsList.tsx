@@ -17,18 +17,49 @@ export default function PostsList() {
     if (status === "idle") dispatch(fetchPosts());
   }, [status, dispatch]);
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p>Error: {error}</p>;
+  if (status === "loading") {
+    return (
+      <div className="flex justify-center items-center py-16">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+  if (status === "failed") {
+    return (
+      <div className="px-4 py-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+        Error: {error}
+      </div>
+    );
+  }
 
   return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.id}>
-          <h3>{post.title}</h3>
-          <p>{post.body}</p>
-          <small>User ID: {post.userId}</small>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">
+        Posts
+        <span className="ml-2 text-sm font-normal text-gray-400">
+          ({posts.length})
+        </span>
+      </h2>
+
+      <div className="space-y-4">
+        {posts.map((post) => (
+          <div
+            key={post.id}
+            className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5
+                         hover:shadow-md transition-shadow duration-200"
+          >
+            <div className="flex items-start justify-between gap-4 mb-2">
+              <h3 className="font-semibold text-gray-800 capitalize leading-snug">
+                {post.title}
+              </h3>
+              <span className="shrink-0 text-xs bg-blue-50 text-blue-600 font-medium px-2 py-1 rounded-full">
+                User {post.userId}
+              </span>
+            </div>
+            <p className="text-sm text-gray-500 leading-relaxed">{post.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
