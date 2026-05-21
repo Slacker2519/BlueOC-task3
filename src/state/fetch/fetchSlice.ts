@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+const API = import.meta.env.VITE_API_URL;
+
 interface Post {
   userId: number;
   id: number;
@@ -23,7 +25,7 @@ const initialState: PostsState = {
 export const fetchPosts = createAsyncThunk<Post[]>(
   "posts/fetchAll",
   async () => {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const response = await fetch(API);
 
     if (!response.ok) throw new Error("Failed to fetch posts");
 
@@ -34,7 +36,7 @@ export const fetchPosts = createAsyncThunk<Post[]>(
 export const addNewPost = createAsyncThunk<Post, Omit<Post, "id">>(
   "posts/addNew",
   async (newPost) => {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    const response = await fetch(API, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newPost),
