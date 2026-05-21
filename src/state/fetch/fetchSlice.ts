@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface Post {
   userId: number;
@@ -30,6 +31,19 @@ export const fetchPosts = createAsyncThunk<Post[]>(
   },
 );
 
+export const addNewPost = createAsyncThunk<Post, Omit<Post, "id">>(
+  "posts/addNew",
+  async (newPost) => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPost),
+    });
+    if (!response.ok) throw new Error("Failed to add new post");
+    return response.json();
+  },
+);
+
 const fetchSlice = createSlice({
   name: "posts",
   initialState,
@@ -47,6 +61,9 @@ const fetchSlice = createSlice({
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message ?? "Unknown error";
+      })
+      .addCase(addNewPost.fulfilled, (state, action: PayloadAction<Post>) => {
+        state.items.push(action.payload);
       });
   },
 });
